@@ -10,8 +10,42 @@ async function init() {
   let currentGuess = '';
   let done = false;
   let isLoading = true;
+  setLoading(isLoading);
 
+  function commit() {
+    currentRow++;
+    currentGuess = '';
+  }
 
+  function addLetter(letter) {
+    if(currentGuess.length < wordLength) {
+      currentGuess += letter;
+      letters[currentRow * wordLength + currentGuess.length - 1].textContent = letter.toUpperCase();
+    } else {
+      currentGuess = currentGuess.substring(0, wordLength);
+      letters[currentRow * wordLength + currentGuess.length - 1].textContent = letter.toUpperCase();
+    }
+  }
+  
+  // removing a letter by taking part of string (currentGuess) and attributing
+  // by itself; assign the letter's position with blank string
+  function removeLetter() {
+    if(currentGuess.length > 0) {
+      letters[currentRow * wordLength + currentGuess.length - 1].textContent = '';
+      currentGuess = currentGuess.substring(0, currentGuess.length - 1);
+    }
+  }
+
+  document.addEventListener("keydown", ({ key }) => {
+    if(key === "Backspace") {
+      removeLetter();
+    } else if(key === "Enter") {
+      if(currentGuess.length === 5)
+        commit();
+    } else if(isLetter(key)){
+      addLetter(key);
+    }
+  });
 }
 
 // function with regular expression (regex) to just accept
