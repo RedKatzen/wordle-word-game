@@ -1,8 +1,8 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
@@ -38,7 +38,7 @@ header {
   grid-template-columns: repeat(5, 1fr);
   row-gap: 1em;
   column-gap: 1em;
-  color: #000
+  color: #000;
 }
 
 .scoreboard-letter {
@@ -53,8 +53,8 @@ header {
   font-weight: bold;
 }
 
-.show {
-  visibility: visible;
+.hidden {
+  visibility: hidden;
 }
 
 .invalid {
@@ -71,6 +71,6 @@ header {
 
 .wrong {
   background-color: #acacac;
-  color: #f5f5f5; 
+  color: #f5f5f5;
   border: none;
 }
