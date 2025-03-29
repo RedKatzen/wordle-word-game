@@ -16,6 +16,7 @@ async function init() {
   const { word: wordRes } = await res.json();
   const word = wordRes.toUpperCase();
   const wordParts = word.split("");
+  console.log(word);
 
   isLoading = false;
   setLoading(isLoading);
@@ -47,11 +48,43 @@ async function init() {
     }
   }
 
+  async function commit() {
+    isLoading = true;
+    setLoading(isLoading);
+    const res = await fetch("https://words.dev-apis.com/validate-word", {
+      method: "post",
+      body: JSON.stringify({ word: currentGuess }),
+    });
+    const { validWord: validate } = await res.json();
+    isLoading = false;
+    setLoading(isLoading);
+
+    if (!validate) {
+      markInvalidWord();
+      return;
+    }
+
+    currentRow++;
+    currentGuess = "";
+  }
+
+  function markInvalidWord() {
+    for (let i = 0; i < wordLength; i++) {
+      letters[currentRow * wordLength + i].classList.remove("invalid");
+
+      // long enough for the browser to repaint without the "invalid class" so we can then add it again
+      setTimeout(
+        () => letters[currentRow * wordLength + i].classList.add("invalid"),
+        10
+      );
+    }
+  }
+
   document.addEventListener("keydown", ({ key }) => {
     if (key === "Backspace") {
       removeLetter();
     } else if (key === "Enter") {
-      if (currentGuess.length === 5) commit();
+      if (currentGuess.length === wordLength) commit();
     } else if (isLetter(key)) {
       addLetter(key);
     }
@@ -64,7 +97,7 @@ function isLetter(letter) {
   return /^[a-zA-Z]$/.test(letter);
 }
 
-// toggle the class 'show' to show/hide the loading txt
+// toggle the class 'hidden' to show/hide the loading txt
 function setLoading(isLoading) {
   loading.classList.toggle("hidden", !isLoading);
 }
@@ -80,6 +113,7 @@ function makeMap(array) {
       obj[array[i]] = 1;
     }
   }
+  console.log(obj);
   return obj;
 }
 
