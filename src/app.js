@@ -16,15 +16,10 @@ async function init() {
   const { word: wordRes } = await res.json();
   const word = wordRes.toUpperCase();
   const wordParts = word.split("");
-  console.log(word);
+  console.log(wordParts);
 
   isLoading = false;
   setLoading(isLoading);
-
-  function commit() {
-    currentRow++;
-    currentGuess = "";
-  }
 
   function addLetter(letter) {
     if (currentGuess.length < wordLength) {
@@ -62,6 +57,24 @@ async function init() {
     if (!validate) {
       markInvalidWord();
       return;
+    }
+
+    const guessParts = currentGuess.toUpperCase().split("");
+    const wordMap = makeMap(wordParts);
+    // let isRight = true;
+
+    // verify if the letter is correct (same letter and position)
+    // close (different position) or wrong
+    for (let i = 0; i < wordLength; i++) {
+      if (guessParts[i] === wordParts[i]) {
+        letters[currentRow * wordLength + i].classList.add("correct");
+        wordMap[guessParts[i]]--;
+      } else if (wordMap[guessParts[i]] > 0) {
+        letters[currentRow * wordLength + i].classList.add("close");
+        wordMap[guessParts[i]]--;
+      } else {
+        letters[currentRow * wordLength + i].classList.add("wrong");
+      }
     }
 
     currentRow++;
