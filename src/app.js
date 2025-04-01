@@ -16,7 +16,6 @@ async function init() {
   const { word: wordRes } = await res.json();
   const word = wordRes.toUpperCase();
   const wordParts = word.split("");
-  console.log(wordParts);
 
   isLoading = false;
   setLoading(isLoading);
@@ -84,7 +83,6 @@ async function init() {
   function markInvalidWord() {
     for (let i = 0; i < wordLength; i++) {
       letters[currentRow * wordLength + i].classList.remove("invalid");
-
       // long enough for the browser to repaint without the "invalid class" so we can then add it again
       setTimeout(
         () => letters[currentRow * wordLength + i].classList.add("invalid"),
@@ -126,7 +124,6 @@ function makeMap(array) {
       obj[array[i]] = 1;
     }
   }
-  console.log(obj);
   return obj;
 }
 
